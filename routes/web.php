@@ -22,30 +22,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/action', 'ActionController@index')->name('action.index');
+Route::resource('action', 'ActionController');
 
-Route::get('/action/create', 'ActionController@create')->name('action.create'); //新增活動
-
-//儲存
-Route::post('/action', 'ActionController@store')->name('action.store');
-
-//顯示
-Route::get('/action/{id}', 'ActionController@show')->name('action.show');
-
-//編輯
-Route::get('/action/{id}/edit', 'ActionController@edit')
-    ->name('action.edit');
-
-//更新
-Route::patch('/action/{id}', 'ActionController@update')
-    ->name('action.update');
-//刪除
-Route::delete('/action/{id}', 'ActionController@destroy')
-    ->name('action.destroy');
-
+Route::group(['prefix' => 'signup'], function () {
 //報名
-Route::get('/signup/create/{id}', 'SignupController@create')
-    ->name('signup.create');
+    Route::get('/create/{id}', 'SignupController@create')
+        ->name('signup.create');
 
 //我要報名
-Route::post('/signup', 'signupController@store')->name('signup.store');
+    Route::post('/', 'signupController@store')->name('signup.store');
+});
