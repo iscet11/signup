@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Action extends Model
 {
-    protected $fillable = [
+//若符合慣例可以不用設定這些
+    protected $table      = 'actions';
+    protected $primaryKey = 'id';
+    protected $fillable   = [
         'title', 'content', 'user_id', 'enable',
     ];
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    public function signups()
+    {
+        return $this->hasMany('App\Signup');
+    }
 }

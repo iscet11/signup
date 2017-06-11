@@ -58,8 +58,8 @@ class ActionController extends Controller
      */
     public function store(ActionRequest $request)
     {
-        Action::create($request->all());
-        return redirect()->route('action.index');
+        $action = Action::create($request->all());
+        return redirect()->route('action.show', $action->id);
     }
 
     /**
@@ -70,7 +70,10 @@ class ActionController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->updateCounter($id);
+        $action          = Action::find($id);
+        $action->content = nl2br($action->content);
+        return view('show', compact('action'));
     }
 
     /**
@@ -81,9 +84,10 @@ class ActionController extends Controller
      */
     public function edit($id)
     {
-        //
+        // $uid    = Auth::user()->id;
+        $action = Action::find($id);
+        return view('edit', compact('action', 'uid'));
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -93,7 +97,17 @@ class ActionController extends Controller
      */
     public function update(ActionRequest $request, $id)
     {
-        //
+        $action = Action::find($id);
+        $action->update($request->all());
+        return redirect()->route('action.show', $id);
+    }
+
+    public function updateCounter($id)
+    {
+        $action = Action::find($id);
+        $action->counter += 1;
+        $action->timestamps = false;
+        $action->update(['counter' => $action->counter]);
     }
 
     /**
@@ -104,6 +118,15 @@ class ActionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Action::destroy($id);
+        return redirect()->route('action.index');
     }
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth', [
+    //         'only' => ['create', 'store', 'edit', 'update', 'destroy'],
+    //     ]);
+    // }
+
 }

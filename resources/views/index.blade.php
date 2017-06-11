@@ -4,6 +4,7 @@
     <ul class="list-group">
       @foreach ($actions as $action)
         <li class="list-group-item">
+          {{$action->user['name']}} 發布於
           {{$action->created_at->format("Y年m月d日")}} -
           <a href="{{route('action.show' , $action->id)}}">
           {{$action->title}}
@@ -14,6 +15,5 @@
     </ul>
     <div class="text-center">
       {!! $actions->render() !!}
-
     </div>
 @endsection
