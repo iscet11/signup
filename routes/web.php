@@ -11,26 +11,23 @@
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+//
+
+Route::get('/', 'ActionController@index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/', function () {
-    $name = 'tad';
-    $say  = '嗨！';
-    $date = date("Y/m/d");
-    return view('welcome', compact('name', 'say', 'date'));
-});
+Route::get('/action', 'ActionController@index')->name('action.index');
 
-Route::get('/action/create', function () {
-    return view('create');
-})->name('action.create'); //新增活動
+Route::get('/action/create', 'ActionController@create')->name('action.create'); //新增活動
 
 //儲存
-Route::post('/action', function () {
-    return view('welcome')->with('content', '儲存完成');
-})->name('action.store');
+Route::post('/action', 'ActionController@store')->name('action.store');
+
+//顯示
+Route::get('/action/{id}', 'ActionController@show')->name('action.show');
